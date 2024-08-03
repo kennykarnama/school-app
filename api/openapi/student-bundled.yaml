@@ -1,0 +1,252 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: School APP
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8080
+security:
+  - bearerAuth: []
+paths:
+  /students:
+    post:
+      summary: Register a new student
+      operationId: registerStudent - registerStudent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterStudent'
+      responses:
+        '201':
+          description: Teacher successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /students/{id}:
+    patch:
+      summary: Patch student
+      operationId: patchStudent - patchStudent
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchStudentReq'
+      responses:
+        '200':
+          description: Student successfully patched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      summary: get student
+      operationId: getStudent - getStudent
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Retrieve student successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /students/{id}/relations:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+    post:
+      summary: Create new student's relation
+      operationId: createStudentRelation - createStudentRelation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStudentRelation'
+      responses:
+        '201':
+          description: Teacher successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentRelation'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    CreateStudentRelation:
+      type: object
+      properties:
+        name:
+          type: string
+        gender:
+          $ref: '#/components/schemas/Gender'
+        occupancy:
+          type: string
+        status:
+          type: string
+          enum:
+            - AYAH_KANDUNG
+            - IBU_KANDUNG
+            - WALI
+        address:
+          type: string
+        phoneNumber:
+          type: string
+    StudentRelation:
+      type: object
+      properties:
+        name:
+          type: string
+        gender:
+          $ref: '#/components/schemas/Gender'
+        occupancy:
+          type: string
+        status:
+          type: string
+          enum:
+            - AYAH_KANDUNG
+            - IBU_KANDUNG
+            - WALI
+        address:
+          type: string
+        phoneNumber:
+          type: string
+    Student:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        alternativeId:
+          type: string
+          format: string
+        name:
+          type: string
+        gender:
+          $ref: '#/components/schemas/Gender'
+        religion:
+          $ref: '#/components/schemas/Religion'
+        childNumber:
+          type: integer
+          minimum: 1
+        dob:
+          type: string
+          format: date
+        pob:
+          type: string
+        profilePicture:
+          type: string
+    PatchStudentReq:
+      type: object
+      properties:
+        alternativeId:
+          type: string
+        name:
+          type: string
+        gender:
+          $ref: '#/components/schemas/Gender'
+        religion:
+          $ref: '#/components/schemas/Religion'
+        childNumber:
+          type: integer
+          minimum: 1
+        dob:
+          type: string
+          format: date
+        pob:
+          type: string
+        profilePicture:
+          type: string
+    RegisterStudent:
+      type: object
+      properties:
+        alternativeId:
+          type: string
+          format: string
+        name:
+          type: string
+        gender:
+          $ref: '#/components/schemas/Gender'
+        religion:
+          $ref: '#/components/schemas/Religion'
+        childNumber:
+          type: integer
+          minimum: 1
+        dob:
+          type: string
+          format: date
+        pob:
+          type: string
+        profilePicture:
+          type: string
+    Gender:
+      type: string
+      enum:
+        - MALE
+        - FEMALE
+    Religion:
+      type: string
+      enum:
+        - ISLAM
+        - PROTESTAN
+        - KRISTEN
+        - HINDU
+        - BUDDHA
+        - KONGHUCU
+    ErrorResponse:
+      type: object
+      properties:
+        httpCode:
+          type: integer
+          description: http status error code
+        errorCode:
+          type: string
+          description: error code
+        errorMessage:
+          type: string
+          description: error message

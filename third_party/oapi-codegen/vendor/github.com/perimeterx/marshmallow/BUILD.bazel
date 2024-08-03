@@ -1,0 +1,18 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "marshmallow",
+    srcs = [
+        "cache.go",
+        "doc.go",
+        "errors.go",
+        "options.go",
+        "reflection.go",
+        "unmarshal.go",
+        "unmarshal_from_json_map.go",
+    ],
+    importmap = "github.com/kennykarnama/school-app/third_party/oapi-codegen/vendor/github.com/perimeterx/marshmallow",
+    importpath = "github.com/perimeterx/marshmallow",
+    visibility = ["//visibility:public"],
+    deps = ["//third_party/oapi-codegen/vendor/github.com/mailru/easyjson/jlexer"],
+)

@@ -1,0 +1,35 @@
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+   EmptyResponse:
+    type: object
+   ErrorResponse:
+    type: object
+    properties:
+      httpCode:
+       type: integer
+       description: http status error code
+      errorCode:
+       type: string
+       description: error code
+      errorMessage:
+       type: string
+       description: error message
+   Gender:
+    type: string
+    enum:
+     - MALE
+     - FEMALE
+   Religion:
+    type: string
+    enum:
+     - ISLAM
+     - PROTESTAN
+     - KRISTEN
+     - HINDU
+     - BUDDHA
+     - KONGHUCU

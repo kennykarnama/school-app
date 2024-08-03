@@ -1,0 +1,108 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: School APP - Academic Year Management
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8080
+security:
+  - bearerAuth: []
+paths:
+  /academic/years:
+   post:
+     summary: Create a new academic year record
+     operationId: createAcademicYear
+     tags:
+       - createAcademicYear
+     requestBody:
+       content:
+         application/json:
+          schema:
+           $ref: '#/components/schemas/CreateAcademicYearReq'
+     responses:
+       '201':
+        description: academicYear successfully created
+        content:
+          application/json:
+           schema:
+            $ref: '#/components/schemas/AcademicYear'
+       default:
+        description: unexpected errors
+        content:
+          application/json:
+           schema:
+            $ref: './meta.yaml#/components/schemas/ErrorResponse'
+   get:
+     summary: List academic year records
+     operationId: listAcademicYears
+     tags:
+       - listAcademicYear
+     requestBody:
+       content: {}
+     responses:
+       '200':
+        description: list academicYears successfully
+        content:
+          application/json:
+           schema:
+            $ref: '#/components/schemas/ListAcademicYear'
+       default:
+        description: unexpected errors
+        content:
+          application/json:
+           schema:
+            $ref: 'meta.yaml#/components/schemas/ErrorResponse'
+   patch:
+     summary: Patch academic year records
+     operationId: patchAcademicYears
+     tags:
+       - patchAcademicYear
+     requestBody:
+       content: {}
+     responses:
+       '200':
+        description: patch successfully done
+        content:
+          application/json:
+           schema:
+            $ref: '#/components/schemas/PatchAcademicYearReq'
+       default:
+        description: unexpected errors
+        content:
+          application/json:
+           schema:
+            $ref: 'meta.yaml#/components/schemas/ErrorResponse'
+    
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      $ref: 'meta.yaml#/components/securitySchemes/bearerAuth'
+  schemas:
+   ListAcademicYear:
+    type: object
+    properties:
+      items:
+       type: array
+       items:
+        $ref: '#/components/schemas/AcademicYear'
+   AcademicYear:
+    type: object
+    properties:
+      ID:
+       type: string
+       format: uuid
+       description: ID of the academic year
+      label:
+       type: string
+       description: academic year label
+   CreateAcademicYearReq:
+    type: object
+    properties:
+      label:
+       type: string
+   PatchAcademicYearReq:
+    type: object
+    properties:
+      label:
+       type: string
