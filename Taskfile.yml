@@ -1,0 +1,21 @@
+version: '3'
+
+env:
+  ENV: infra/envs
+
+dotenv: ['.env', '{{.ENV}}/.env.', '{{.HOME}}/.env']
+
+tasks:
+ compose-local:
+    dir: ./infra
+    cmds:
+      - docker compose pull
+      - docker compose up -d
+#  migrate-db-*-*:
+#     vars:
+#       APP_NAME: '{{index .MATCH 0}}'
+#       TARGET_ENV: '{{index .MATCH 1}}'
+#     dir: ./src/{{.APP_NAME}}/infra/db/migrations
+#     cmds:
+#       - echo "dsn".$DSN_{{.TARGET_ENV}}
+#       - migrate -database $DSN_{{.TARGET_ENV}} -path ./ up

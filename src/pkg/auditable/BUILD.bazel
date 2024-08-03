@@ -1,0 +1,8 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "auditable",
+    srcs = ["auditable.go"],
+    importpath = "github.com/kennykarnama/school-app/src/pkg/auditable",
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,11 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "enums",
+    srcs = [
+        "gender.go",
+        "religion.go",
+    ],
+    importpath = "github.com/kennykarnama/school-app/src/pkg/enums",
+    visibility = ["//visibility:public"],
+)

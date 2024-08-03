@@ -1,0 +1,85 @@
+services:
+ crdb:
+   image: cockroachdb/cockroach:v24.1.2
+   ports:
+     - "26257:26257"
+     - "8080:8080"
+   command: start-single-node --insecure
+   volumes:
+    - ./db/crdb/init:/docker-entrypoint-initdb.d
+    - ./.volumes/crdb:/cockroach/cockroach-data
+   healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health?ready=1"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+ user-migrator:
+   image: kennykarnama/school-app:user-migrator
+   deploy:
+     resources:
+       limits:
+         memory: 125M
+   entrypoint: 
+    - /migrate
+    - -verbose
+    - -path
+    - ./
+    - -database
+    - "cockroachdb://root:@host.docker.internal:26257/school_app?x-migrations-table=user_migrations&sslmode=disable"
+    - up
+   depends_on:
+    crdb:
+      condition: service_healthy
+ teacher-migrator:
+   image: kennykarnama/school-app:teacher-migrator
+   deploy:
+     resources:
+       limits:
+         memory: 125M
+   entrypoint: 
+    - /migrate
+    - -verbose
+    - -path
+    - ./
+    - -database
+    - "cockroachdb://root:@host.docker.internal:26257/school_app?x-migrations-table=teacher_migrations&sslmode=disable"
+    - up
+   depends_on:
+    user-migrator:
+     condition: service_completed_successfully
+ student-migrator:
+   image: kennykarnama/school-app:student-migrator
+   deploy:
+     resources:
+       limits:
+         memory: 125M
+   entrypoint: 
+    - /migrate
+    - -verbose
+    - -path
+    - ./
+    - -database
+    - "cockroachdb://root:@host.docker.internal:26257/school_app?x-migrations-table=student_migrations&sslmode=disable"
+    - up
+   depends_on:
+    user-migrator:
+     condition: service_completed_successfully
+    teacher-migrator:
+     condition: service_completed_successfully
+ administration-migrator:
+   image: kennykarnama/school-app:administration-migrator
+   deploy:
+     resources:
+       limits:
+         memory: 125M
+   entrypoint: 
+    - /migrate
+    - -verbose
+    - -path
+    - ./
+    - -database
+    - "cockroachdb://root:@host.docker.internal:26257/school_app?x-migrations-table=administration_migrations&sslmode=disable"
+    - up
+   depends_on:
+    student-migrator:
+     condition: service_completed_successfully
