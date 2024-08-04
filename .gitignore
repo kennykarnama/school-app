@@ -279,3 +279,5 @@ infra/jenkins/conf
 infra/.volumes/
 
 .env
+
+.task

@@ -12,12 +12,12 @@ oapi_codegen(
         "gin-server",
     ],
     package = "genapi",
-    spec = "school-bundled.yaml",
+    spec = "dist/school.yaml",
     visibility = ["//visibility:public"],
 )
 
 go_library(
-    name = "openapi",
+    name = "generate",
     srcs = [
         "school.gen.go",
     ],

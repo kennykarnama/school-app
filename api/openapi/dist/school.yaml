@@ -1,0 +1,602 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: School APP - Academic Year Management
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: createAcademicYear
+    x-displayName: createAcademicYear
+  - name: listAcademicYear
+    x-displayName: listAcademicYear
+  - name: patchAcademicYear
+    x-displayName: patchAcademicYear
+  - name: recordAttendance
+    x-displayName: recordAttendance
+  - name: student_other
+    x-displayName: other
+  - name: registerTeacher
+    x-displayName: registerTeacher
+  - name: registerUser
+    x-displayName: registerUser
+  - name: authenticateUser
+    x-displayName: authenticateUser
+paths:
+  /academic/years:
+    post:
+      summary: Create a new academic year record
+      operationId: createAcademicYear
+      tags:
+        - createAcademicYear
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAcademicYearReq'
+      responses:
+        '201':
+          description: academicYear successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademicYear'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: []
+    get:
+      summary: List academic year records
+      operationId: listAcademicYears
+      tags:
+        - listAcademicYear
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: list academicYears successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAcademicYear'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: []
+    patch:
+      summary: Patch academic year records
+      operationId: patchAcademicYears
+      tags:
+        - patchAcademicYear
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: patch successfully done
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchAcademicYearReq'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: []
+  /academic/years/{ayid}/classes/{cid}/attendances:
+    post:
+      summary: record attendance
+      operationId: recordAttendance
+      tags:
+        - recordAttendance
+      parameters:
+        - in: path
+          name: ayid
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: cid
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordAttendanceReq'
+      responses:
+        '201':
+          description: academicYear successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: []
+  /students:
+    post:
+      summary: Register a new student
+      operationId: registerStudent - registerStudent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterStudent'
+      responses:
+        '201':
+          description: Teacher successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - student_other
+      security:
+        - bearerAuth: []
+  /students/{id}:
+    patch:
+      summary: Patch student
+      operationId: patchStudent - patchStudent
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchStudentReq'
+      responses:
+        '200':
+          description: Student successfully patched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - student_other
+      security:
+        - bearerAuth: []
+    get:
+      summary: get student
+      operationId: getStudent - getStudent
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Retrieve student successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - student_other
+      security:
+        - bearerAuth: []
+  /students/{id}/relations:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+    post:
+      summary: Create new student's relation
+      operationId: createStudentRelation - createStudentRelation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStudentRelation'
+      responses:
+        '201':
+          description: Teacher successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentRelation'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - student_other
+      security:
+        - bearerAuth: []
+  /teachers:
+    post:
+      summary: Register a new teacher
+      operationId: registerTeacher
+      tags:
+        - registerTeacher
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterTeacherReq'
+      responses:
+        '201':
+          description: Teacher successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Teacher'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: []
+  /users:
+    post:
+      summary: Register a new user
+      operationId: registerUser
+      tags:
+        - registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUserReq'
+      responses:
+        '201':
+          description: Location successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: []
+  /users/login:
+    post:
+      summary: Login using credentials
+      operationId: authenticateUser
+      tags:
+        - authenticateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginReq'
+      responses:
+        '201':
+          description: Location successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResp'
+        default:
+          description: unexpected errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ListAcademicYear:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademicYear'
+    AcademicYear:
+      type: object
+      properties:
+        ID:
+          type: string
+          format: uuid
+          description: ID of the academic year
+        label:
+          type: string
+          description: academic year label
+    CreateAcademicYearReq:
+      type: object
+      properties:
+        label:
+          type: string
+    PatchAcademicYearReq:
+      type: object
+      properties:
+        label:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        httpCode:
+          type: integer
+          description: http status error code
+        errorCode:
+          type: string
+          description: error code
+        errorMessage:
+          type: string
+          description: error message
+    AttendanceType:
+      type: string
+      enum:
+        - SAKIT
+        - TANPA_KETERANGAN
+        - HADIR
+        - IZIN
+    AttendanceItem:
+      type: object
+      properties:
+        student_id:
+          type: string
+        recorded_date:
+          type: string
+          format: date
+        at:
+          $ref: '#/components/schemas/AttendanceType'
+    RecordAttendanceReq:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttendanceItem'
+    EmptyResponse:
+      type: object
+    CreateStudentRelation:
+      type: object
+      properties:
+        name:
+          type: string
+        gender:
+          $ref: '#/components/schemas/Gender'
+        occupancy:
+          type: string
+        status:
+          type: string
+          enum:
+            - AYAH_KANDUNG
+            - IBU_KANDUNG
+            - WALI
+        address:
+          type: string
+        phoneNumber:
+          type: string
+    StudentRelation:
+      type: object
+      properties:
+        name:
+          type: string
+        gender:
+          $ref: '#/components/schemas/Gender'
+        occupancy:
+          type: string
+        status:
+          type: string
+          enum:
+            - AYAH_KANDUNG
+            - IBU_KANDUNG
+            - WALI
+        address:
+          type: string
+        phoneNumber:
+          type: string
+    Student:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        alternativeId:
+          type: string
+          format: string
+        name:
+          type: string
+        gender:
+          $ref: '#/components/schemas/Gender'
+        religion:
+          $ref: '#/components/schemas/Religion'
+        childNumber:
+          type: integer
+          minimum: 1
+        dob:
+          type: string
+          format: date
+        pob:
+          type: string
+        profilePicture:
+          type: string
+    PatchStudentReq:
+      type: object
+      properties:
+        alternativeId:
+          type: string
+        name:
+          type: string
+        gender:
+          $ref: '#/components/schemas/Gender'
+        religion:
+          $ref: '#/components/schemas/Religion'
+        childNumber:
+          type: integer
+          minimum: 1
+        dob:
+          type: string
+          format: date
+        pob:
+          type: string
+        profilePicture:
+          type: string
+    RegisterStudent:
+      type: object
+      properties:
+        alternativeId:
+          type: string
+          format: string
+        name:
+          type: string
+        gender:
+          $ref: '#/components/schemas/Gender'
+        religion:
+          $ref: '#/components/schemas/Religion'
+        childNumber:
+          type: integer
+          minimum: 1
+        dob:
+          type: string
+          format: date
+        pob:
+          type: string
+        profilePicture:
+          type: string
+    Gender:
+      type: string
+      enum:
+        - MALE
+        - FEMALE
+    Religion:
+      type: string
+      enum:
+        - ISLAM
+        - PROTESTAN
+        - KRISTEN
+        - HINDU
+        - BUDDHA
+        - KONGHUCU
+    Teacher:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: string
+        nik:
+          type: string
+        gender:
+          $ref: '#/components/schemas/Gender'
+        religion:
+          $ref: '#/components/schemas/Religion'
+    RegisterTeacherReq:
+      type: object
+      properties:
+        user_id:
+          type: string
+        nik:
+          type: string
+        gender:
+          $ref: '#/components/schemas/Gender'
+        religion:
+          $ref: '#/components/schemas/Religion'
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+    RegisterUserReq:
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        password_confirmation:
+          type: string
+          format: password
+    LoginReq:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+    LoginResp:
+      type: object
+      properties:
+        token:
+          type: string
+x-tagGroups:
+  - name: School APP - Academic Year Management
+    tags:
+      - createAcademicYear
+      - listAcademicYear
+      - patchAcademicYear
+      - registerTeacher
+      - registerUser
+      - authenticateUser
+  - name: School APP - Attendance Management
+    tags:
+      - recordAttendance
+  - name: School APP
+    tags:
+      - student_other

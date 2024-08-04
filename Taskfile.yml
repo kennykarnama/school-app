@@ -11,11 +11,22 @@ tasks:
     cmds:
       - docker compose pull
       - docker compose up -d
-#  migrate-db-*-*:
-#     vars:
-#       APP_NAME: '{{index .MATCH 0}}'
-#       TARGET_ENV: '{{index .MATCH 1}}'
-#     dir: ./src/{{.APP_NAME}}/infra/db/migrations
-#     cmds:
-#       - echo "dsn".$DSN_{{.TARGET_ENV}}
-#       - migrate -database $DSN_{{.TARGET_ENV}} -path ./ up
+ redoc-api:
+    vars:
+      OPENAPI_DIR: ./api/openapi
+      DIST_DIR: ./dist
+    dir: ./api/openapi
+    sources:
+      - academic.yaml
+      - attendance.yaml
+      - student.yaml
+      - teacher.yaml
+      - user.yaml
+    cmds:
+      - for: sources
+        cmd: redocly bundle {{.ITEM}} -o {{joinPath .DIST_DIR .ITEM}}
+      - cmd: redocly join dist/academic.yaml dist/attendance.yaml dist/student.yaml dist/teacher.yaml dist/user.yaml -o {{joinPath .DIST_DIR "school.yaml"}}
+ generate-api:
+     deps: ["redoc-api"]
+     cmds:
+       - cmd: bazelisk build //api/openapi:generate
