@@ -30,3 +30,4 @@ tasks:
      deps: ["redoc-api"]
      cmds:
        - cmd: bazelisk build //api/openapi:generate
+       - cmd: yes | cp -rf ./bazel-bin/api/openapi/school.gen.go ./api/openapi
