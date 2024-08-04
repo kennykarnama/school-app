@@ -53,7 +53,7 @@ func (h *HttpHandler) PatchAcademicYears(c *gin.Context) {
 
 func (h *HttpHandler) CreateAcademicYear(c *gin.Context) {
 	var req genapi.CreateAcademicYearReq
-	err := c.Bind(req)
+	err := c.Bind(&req)
 	if err != nil {
 		GenErrToAPIErr(err, c)
 
@@ -80,7 +80,7 @@ func (h *HttpHandler) CreateAcademicYear(c *gin.Context) {
 
 	ayOut := genapi.AcademicYear{
 		ID:    &uv,
-		Label: new(string),
+		Label: &ay.Label,
 	}
 
 	c.JSON(http.StatusCreated, ayOut)
@@ -90,3 +90,31 @@ func (h *HttpHandler) CreateAcademicYear(c *gin.Context) {
 func (h *HttpHandler) RecordAttendance(c *gin.Context, ayid string, cid string) {
 
 }
+
+// Register a new student
+// (POST /students)
+func (h *HttpHandler) RegisterStudentRegisterStudent(c *gin.Context) {}
+
+// get student
+// (GET /students/{id})
+func (h *HttpHandler) GetStudentGetStudent(c *gin.Context, id string) {}
+
+// Patch student
+// (PATCH /students/{id})
+func (h *HttpHandler) PatchStudentPatchStudent(c *gin.Context, id string) {}
+
+// Create new student's relation
+// (POST /students/{id}/relations)
+func (h *HttpHandler) CreateStudentRelationCreateStudentRelation(c *gin.Context, id string) {}
+
+// Register a new teacher
+// (POST /teachers)
+func (h *HttpHandler) RegisterTeacher(c *gin.Context) {}
+
+// Register a new user
+// (POST /users)
+func (h *HttpHandler) RegisterUser(c *gin.Context) {}
+
+// Login using credentials
+// (POST /users/login)
+func (h *HttpHandler) AuthenticateUser(c *gin.Context) {}

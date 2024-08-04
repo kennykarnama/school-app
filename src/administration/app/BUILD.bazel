@@ -5,5 +5,8 @@ go_library(
     srcs = ["academic_year.go"],
     importpath = "github.com/kennykarnama/school-app/src/administration/app",
     visibility = ["//visibility:public"],
-    deps = ["//src/administration/domain"],
+    deps = [
+        "//src/administration/domain",
+        "@com_github_google_uuid//:uuid",
+    ],
 )

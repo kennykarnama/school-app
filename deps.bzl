@@ -290,6 +290,12 @@ def go_dependencies():
         version = "v0.0.4",
     )
     go_repository(
+        name = "com_github_kelseyhightower_envconfig",
+        importpath = "github.com/kelseyhightower/envconfig",
+        sum = "h1:Im6hONhd3pLkfDFsbRgu68RDNkGF1r3dvMUtDTo2cv8=",
+        version = "v1.4.0",
+    )
+    go_repository(
         name = "com_github_klauspost_compress",
         importpath = "github.com/klauspost/compress",
         sum = "h1:2mk3MPGNzKyxErAw8YaohYh69+pa4sIQSC0fPGCFR9I=",

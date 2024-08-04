@@ -10,6 +10,7 @@ go_library(
         "//src/administration/domain",
         "//src/pkg/psql",
         "@com_github_exaring_otelpgx//:otelpgx",
+        "@com_github_google_uuid//:uuid",
         "@com_github_jackc_pgx_v5//:pgx",
         "@com_github_jackc_pgx_v5//pgxpool",
         "@com_github_jackc_pgx_v5//tracelog",

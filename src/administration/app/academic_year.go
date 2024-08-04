@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/kennykarnama/school-app/src/administration/domain"
 )
 
@@ -27,6 +28,7 @@ type CreateResp struct {
 
 func (a *AcademicYearManager) Create(ctx context.Context, req CreateReq) (*CreateResp, error) {
 	ay := &domain.AcademicYear{
+		ID:        uuid.New().String(),
 		Label:     req.Label,
 		CreatedAt: time.Now().UTC(),
 	}

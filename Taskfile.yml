@@ -36,3 +36,6 @@ tasks:
        - bazelisk run //:gazelle
        - bazelisk run //:gazelle-update-repos
        - bazelisk build //...
+ run-school-server:
+     cmds:
+       - bazelisk run //src/cmd/school-api:school-api

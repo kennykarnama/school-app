@@ -8,23 +8,23 @@ package db
 import (
 	"context"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-const createAcademicYear = `-- name: CreateAcademicYear :one
-INSERT INTO academic_year(label, created_at) VALUES($1, $2) RETURNING id
+const createAcademicYear = `-- name: CreateAcademicYear :exec
+INSERT INTO academic_year(id, label, created_at) VALUES($1, $2, $3)
 `
 
 type CreateAcademicYearParams struct {
+	ID        uuid.UUID
 	Label     string
 	CreatedAt pgtype.Timestamptz
 }
 
-func (q *Queries) CreateAcademicYear(ctx context.Context, arg CreateAcademicYearParams) (pgtype.UUID, error) {
-	row := q.db.QueryRow(ctx, createAcademicYear, arg.Label, arg.CreatedAt)
-	var id pgtype.UUID
-	err := row.Scan(&id)
-	return id, err
+func (q *Queries) CreateAcademicYear(ctx context.Context, arg CreateAcademicYearParams) error {
+	_, err := q.db.Exec(ctx, createAcademicYear, arg.ID, arg.Label, arg.CreatedAt)
+	return err
 }
 
 const listAcademicYear = `-- name: ListAcademicYear :many

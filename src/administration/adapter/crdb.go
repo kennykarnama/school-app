@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/exaring/otelpgx"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/pgx/v5/tracelog"
@@ -75,16 +76,13 @@ func (a *AcademicYearRepo) Create(ctx context.Context, ay *domain.AcademicYear) 
 		}
 	}()
 
+	uv := uuid.MustParse(ay.ID)
 	ptx := a.q.WithTx(tx)
-	pgID, err := ptx.CreateAcademicYear(ctx, db.CreateAcademicYearParams{
+	err = ptx.CreateAcademicYear(ctx, db.CreateAcademicYearParams{
+		ID:        uv,
 		Label:     ay.Label,
 		CreatedAt: psql.TimeToPGTimestampz(ay.CreatedAt),
 	})
-	if err != nil {
-		return fmt.Errorf("academicYear.save err: %w", err)
-	}
-
-	ay.ID, err = psql.PGUUIDToStr(pgID.UUIDValue())
 	if err != nil {
 		return fmt.Errorf("academicYear.save err: %w", err)
 	}
@@ -119,13 +117,9 @@ func (a *AcademicYearRepo) List(ctx context.Context) ([]domain.AcademicYear, err
 	academicYears := []domain.AcademicYear{}
 
 	for _, item := range dbItems {
-		id, err := psql.PGUUIDToStr(item.ID.UUIDValue())
-		if err != nil {
-			return nil, fmt.Errorf("academicYear.list err: %w", err)
-		}
 
 		academicYears = append(academicYears, domain.AcademicYear{
-			ID:        id,
+			ID:        item.ID.String(),
 			Label:     item.Label,
 			CreatedAt: psql.PGTimestampzToTimestamp(item.CreatedAt),
 		})

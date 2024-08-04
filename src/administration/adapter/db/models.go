@@ -5,25 +5,26 @@
 package db
 
 import (
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type AcademicYear struct {
-	ID        pgtype.UUID
+	ID        uuid.UUID
 	Label     string
 	CreatedAt pgtype.Timestamptz
 }
 
 type AttendanceType struct {
-	ID        pgtype.UUID
+	ID        uuid.UUID
 	Label     string
 	CreatedAt pgtype.Timestamptz
 	DeletedAt pgtype.Timestamptz
 }
 
 type StudentAttendance struct {
-	ID               pgtype.UUID
-	StudentClassID   pgtype.UUID
+	ID               uuid.UUID
+	StudentClassID   uuid.UUID
 	Attend           pgtype.Bool
 	AttendanceDate   pgtype.Date
 	AttendanceTypeID pgtype.UUID
@@ -34,10 +35,10 @@ type StudentAttendance struct {
 }
 
 type StudentClass struct {
-	ID               pgtype.UUID
-	StudentID        pgtype.UUID
+	ID               uuid.UUID
+	StudentID        uuid.UUID
 	ClassLabel       string
-	AcademicYearID   pgtype.UUID
+	AcademicYearID   uuid.UUID
 	DeactivateReason pgtype.Text
 	OwnerID          string
 	CreatedAt        pgtype.Timestamptz
