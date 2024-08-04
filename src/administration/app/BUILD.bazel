@@ -1,0 +1,9 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "app",
+    srcs = ["academic_year.go"],
+    importpath = "github.com/kennykarnama/school-app/src/administration/app",
+    visibility = ["//visibility:public"],
+    deps = ["//src/administration/domain"],
+)

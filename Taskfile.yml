@@ -31,3 +31,8 @@ tasks:
      cmds:
        - cmd: bazelisk build //api/openapi:generate
        - cmd: yes | cp -rf ./bazel-bin/api/openapi/school.gen.go ./api/openapi
+ bazel:
+     cmds:
+       - bazelisk run //:gazelle
+       - bazelisk run //:gazelle-update-repos
+       - bazelisk build //...

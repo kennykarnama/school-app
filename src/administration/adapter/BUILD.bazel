@@ -1,0 +1,17 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "adapter",
+    srcs = ["crdb.go"],
+    importpath = "github.com/kennykarnama/school-app/src/administration/adapter",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//src/administration/adapter/db",
+        "//src/administration/domain",
+        "//src/pkg/psql",
+        "@com_github_exaring_otelpgx//:otelpgx",
+        "@com_github_jackc_pgx_v5//:pgx",
+        "@com_github_jackc_pgx_v5//pgxpool",
+        "@com_github_jackc_pgx_v5//tracelog",
+    ],
+)

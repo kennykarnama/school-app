@@ -1,0 +1,8 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "ptr",
+    srcs = ["to_pointer.go"],
+    importpath = "github.com/kennykarnama/school-app/src/pkg/ptr",
+    visibility = ["//visibility:public"],
+)
